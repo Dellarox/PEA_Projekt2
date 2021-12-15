@@ -36,16 +36,16 @@ bool Algorithm::fileReadGraph(string fileName, bool isTest, int& numberOfCities,
 			weightMatrix.clear();
 			weightMatrix.resize(0);
 
-			numberOfCities = tabNumberOfCities[0]; // przypisanie iloœci miast z pierwszej linijki pliku
+			numberOfCities = tabNumberOfCities[0]; // przypisanie ilosci miast z pierwszej linijki pliku
 
 			if (!isTest)
-				cout << endl << "Iloœæ miast:" << numberOfCities << endl << endl;
+				cout << endl << "Ilosc miast:" << numberOfCities << endl << endl;
 
 			weightMatrix.resize(numberOfCities, vector<int>(numberOfCities, 0));
 
 			for (int i = 0; i < numberOfCities; i++) {
 				for (int j = 0; j < numberOfCities; j++) {
-					file >> weightMatrix[i][j]; // kolejne dodawanie wartoœci do vectora
+					file >> weightMatrix[i][j]; // kolejne dodawanie wartosci do vectora
 				}
 			}
 		}
@@ -60,7 +60,7 @@ bool Algorithm::fileReadGraph(string fileName, bool isTest, int& numberOfCities,
 	return false;
 }
 
-int pathLenght(vector<vector<int>> weightMatrix, vector<int> path) { // funkcja obliczaj¹ca d³ugoœæ œcie¿ki
+int pathLenght(vector<vector<int>> weightMatrix, vector<int> path) { // funkcja obliczajaca dlugosc sciezki
 	int lenght = 0;
 
 	for (int i = 0; i < path.size() - 1; i++)
@@ -70,7 +70,7 @@ int pathLenght(vector<vector<int>> weightMatrix, vector<int> path) { // funkcja 
 	return lenght;
 }
 
-void Algorithm::simulatedAnnealing(vector<vector<int>> weightMatrix, int& result, vector<int>& path, float timeAlg){ // funkcja odpowiedzialna za wykonanie algorytmu symulowanego wy¿arzania
+void Algorithm::simulatedAnnealing(vector<vector<int>> weightMatrix, int& result, vector<int>& path, float timeAlg){ // funkcja odpowiedzialna za wykonanie algorytmu symulowanego wyzarzania
 	long long int frequency, start, elapsed = 0;
 	QueryPerformanceFrequency((LARGE_INTEGER*)&frequency);
 	start = read_QPC();
@@ -80,12 +80,12 @@ void Algorithm::simulatedAnnealing(vector<vector<int>> weightMatrix, int& result
 	double temperature = 1000.0;
 	int vertex1, vertex2;
 
-	for (int i = 0; i < weightMatrix.size(); i++) // stworzenie domyœlnej œcie¿ki po wszystkich wierzcho³kach
+	for (int i = 0; i < weightMatrix.size(); i++) // stworzenie domyslnej sciezki po wszystkich wierzcholkach
 		pathHelp.push_back(i);
 
 	bestPath = pathHelp;
 
-	for (int i = 0; i < 1000; i++) { // pêtla, która losuje 1000 rozwi¹zañ i wybiera najlepsze
+	for (int i = 0; i < 1000; i++) { // petla, ktora losuje 1000 rozwiazan i wybiera najlepsze
 		random_shuffle(pathHelp.begin(), pathHelp.end());
 		if (pathLenght(weightMatrix, pathHelp) < pathLenght(weightMatrix, bestPath))
 			bestPath = pathHelp;
@@ -93,35 +93,35 @@ void Algorithm::simulatedAnnealing(vector<vector<int>> weightMatrix, int& result
 
 	pathHelp = bestPath;
 
-	temperature = 0.5 * pathLenght(weightMatrix, bestPath);	// ustawienie temperatury na oko³o po³owê d³ugoœci najlepszej drogi - oko³o, poniewa¿ bierzemy jedno z tysi¹ca losowych rozwi¹zañ
-															// taka wartoœæ temperatury to poprawna teoretyczna wartoœæ
+	temperature = 0.5 * pathLenght(weightMatrix, bestPath);	// ustawienie temperatury na okolo polowe dlugosci najlepszej drogi - okolo, poniewaz bierzemy jedno z tysiaca losowych rozwiazan
+															
 
-	if (temperature > 1000) // jednak je¿eli temperatura jest wiêksza ni¿ 1000 ustawiamy j¹ na 1000, aby nie by³a za du¿a
+	if (temperature > 1000) // jednak jezeli temperatura jest wieksza niz 1000 ustawiamy ja na 1000, aby nie wydluzac za bardzo dzialania algorytmu
 		temperature = 1000;
 	
 
-	while (temperature > 0.00000001 && ((float)elapsed / frequency) < timeAlg) { // pêtla dzia³a dopóki nie osi¹gniemy za niskiej temperatury lub nie minie wyznaczony przez nas czas (kryterium stopu)
+	while (temperature > 0.00000001 && ((float)elapsed / frequency) < timeAlg) { // petla dziala dopoki nie osiagniemy za niskiej temperatury lub nie minie wyznaczony przez nas czas (kryterium stopu)
 		vector<int> neighbour = pathHelp;
 
-		vertex1 = rand() % pathHelp.size(); // losujemy pierwszy wierzcho³ek
-		vertex2 = (vertex1 + rand() % pathHelp.size()) % pathHelp.size(); // losujemy drugi wierzcho³ek
+		vertex1 = rand() % pathHelp.size(); // losujemy pierwszy wierzcholek
+		vertex2 = (vertex1 + rand() % pathHelp.size()) % pathHelp.size(); // losujemy drugi wierzcholek
 
-		swap(neighbour[vertex1], neighbour[vertex2]); // zamieniamy kolejnoœæ wierzcho³ków, ¿eby mieæ 2 ró¿ne tablice
+		swap(neighbour[vertex1], neighbour[vertex2]); // zamieniamy kolejnosc wierzcholkow, zeby miec 2 rozne tablice
 
 		double energy = pathLenght(weightMatrix, pathHelp); 
 		double deltaEnergy = pathLenght(weightMatrix, neighbour);
 		int resultHelp;
 
-		if (deltaEnergy < energy) // je¿eli d³ugoœæ drogi s¹siada jest lepsza to if w linijce 121 zawsze siê wykona
+		if (deltaEnergy < energy) // jezeli dlugosc drogi sasiada jest lepsza to if w linijce 121 zawsze sie wykona
 			resultHelp = 1;
-		else					// w przeciwnym razie liczymi szanse na przyjêcie gorszego rozwi¹zania (if w 121 nie zawsze siê wtedy wykona)
+		else					// w przeciwnym razie liczymi szanse na przyjecie gorszego rozwiazania (if w 121 nie zawsze sie wtedy wykona)
 			resultHelp = exp(-(deltaEnergy - energy) / temperature);
 
 
 		if (resultHelp > (double)rand() / RAND_MAX)
 			pathHelp = neighbour;
 
-		if (pathLenght(weightMatrix, pathHelp) < pathLenght(weightMatrix, bestPath)) // sprawdzenie czy d³ugoœæ œcie¿ki jest lepsza
+		if (pathLenght(weightMatrix, pathHelp) < pathLenght(weightMatrix, bestPath)) // sprawdzenie czy dlugosc sciezki jest lepsza
 			bestPath = pathHelp;
 
 		temperature *= 0.999999;

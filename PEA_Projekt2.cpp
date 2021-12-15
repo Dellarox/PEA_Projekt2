@@ -24,7 +24,7 @@ void showRow(vector<int> weightMatrix) { // funkcja pomocnicza w wyświetlaniu m
     }
 }
 
-void showWeightMatrix(int numberOfCities, vector<vector<int>> weightMatrix) { // funkcja wyświetlająca macierz
+void showWeightMatrix(int numberOfCities, vector<vector<int>> weightMatrix) { // funkcja wyświetlajaca macierz
 
     if (numberOfCities == 0) {
         cout << "Nie wczytano struktury lub liczba miast wynosi 0!" << endl;
@@ -40,23 +40,23 @@ void showWeightMatrix(int numberOfCities, vector<vector<int>> weightMatrix) { //
 
 void doSA(float time) {
     Algorithm a;
-    /*cout << "Odległości między miastami:" << endl << endl;
+    /*cout << "Odległości miedzy miastami:" << endl << endl;
     showWeightMatrix(numberOfCitiesGlobal, weightMatrixGlobal);
     cout << endl;*/
     int result;
     vector<int> path;
     a.simulatedAnnealing(weightMatrixGlobal, result, path, time);
-    cout << "\nMinimalna długość drogi: " << result << endl;
-    cout << "\nŚcieżka, która jest obierana: ";
+    cout << "\nMinimalna długośc drogi: " << result << endl;
+    cout << "\nŚciezka, ktora jest obierana: ";
     for (int i = 0; i < path.size(); i++) {
         cout << path[i] << "--->";
     }
     cout << path[0];
 }
 
-void tests() { // funkcja, w której odpalane są wszystkie testy
+void tests() { // funkcja, w ktorej odpalane sa wszystkie testy
     
-    cout << "KONIEC TESTÓW" << endl;
+    cout << "KONIEC TESToW" << endl;
 }
 
 int main()
@@ -75,27 +75,27 @@ int main()
     Algorithm a;
     float time = 60;
 
-    cout << "Projekt PEA    Kajetan Krasoń    252767" << endl << endl;
+    cout << "Projekt PEA    Kajetan Krason    252767" << endl << endl;
 
     do {
-        cout << "1. Wczytaj strukturę z pliku i ją pokaż." << endl;
-        cout << "2. Pokaż wczytaną strukturę." << endl;
+        cout << "1. Wczytaj strukture z pliku i ja pokaz." << endl;
+        cout << "2. Pokaz wczytana strukture." << endl;
         cout << "3. Ustaw parametry." << endl;
-        cout << "4. Rozwiąż problem komiwojażera na wczytanej strukturze  - symulowane wyżarzanie. (max czas trwania algorytmu: " << time << " sekund)" << endl;
+        cout << "4. Rozwiaz problem komiwojazera na wczytanej strukturze  - symulowane wyzarzanie. (max czas trwania algorytmu: " << time << " sekund)" << endl;
         //cout << "5. Testy. " << endl;
-        cout << "6. Opuść program. " << endl;
+        cout << "6. Opuśc program. " << endl;
         cin >> menuOperation;
 
         switch (menuOperation)
         {
         case 1:
-            cout << "Podaj nazwę pliku (plik txt, bez rozszerzenia): " << endl;
+            cout << "Podaj nazwe pliku (plik txt, bez rozszerzenia): " << endl;
             cin >> fileName;
             fileName.append(".txt");
             checker = a.fileReadGraph(fileName, false, numberOfCitiesGlobal, weightMatrixGlobal);
             break;
         case 2:
-            cout << "Odległości między miastami:" << endl << endl;
+            cout << "Odległości miedzy miastami:" << endl << endl;
             showWeightMatrix(numberOfCitiesGlobal, weightMatrixGlobal);
             break;
         case 3:
