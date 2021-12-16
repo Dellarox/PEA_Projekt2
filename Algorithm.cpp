@@ -79,6 +79,7 @@ void Algorithm::simulatedAnnealing(vector<vector<int>> weightMatrix, int& result
 	vector<int> pathHelp, bestPath;
 	double temperature = 1000.0;
 	int vertex1, vertex2;
+	int bestPathLenght;
 
 	for (int i = 0; i < weightMatrix.size(); i++) // stworzenie domyslnej sciezki po wszystkich wierzcholkach
 		pathHelp.push_back(i);
@@ -99,6 +100,8 @@ void Algorithm::simulatedAnnealing(vector<vector<int>> weightMatrix, int& result
 	if (temperature > 1000) // jednak jezeli temperatura jest wieksza niz 1000 ustawiamy ja na 1000, aby nie wydluzac za bardzo dzialania algorytmu
 		temperature = 1000;
 	
+	bestPathLenght = pathLenght(weightMatrix, bestPath);
+	double energy = pathLenght(weightMatrix, pathHelp);
 
 	while (temperature > 0.00000001 && ((float)elapsed / frequency) < timeAlg) { // petla dziala dopoki nie osiagniemy za niskiej temperatury lub nie minie wyznaczony przez nas czas (kryterium stopu)
 		vector<int> neighbour = pathHelp;
@@ -108,21 +111,25 @@ void Algorithm::simulatedAnnealing(vector<vector<int>> weightMatrix, int& result
 
 		swap(neighbour[vertex1], neighbour[vertex2]); // zamieniamy kolejnosc wierzcholkow, zeby miec 2 rozne tablice
 
-		double energy = pathLenght(weightMatrix, pathHelp); 
 		double deltaEnergy = pathLenght(weightMatrix, neighbour);
-		int resultHelp;
+		double resultHelp;
 
-		if (deltaEnergy < energy) // jezeli dlugosc drogi sasiada jest lepsza to if w linijce 121 zawsze sie wykona
+		if (deltaEnergy < energy) // jezeli dlugosc drogi sasiada jest lepsza to if w linijce 123 zawsze sie wykona
 			resultHelp = 1;
-		else					// w przeciwnym razie liczymi szanse na przyjecie gorszego rozwiazania (if w 121 nie zawsze sie wtedy wykona)
+		else					// w przeciwnym razie liczymi szanse na przyjecie gorszego rozwiazania (if w 123 nie zawsze sie wtedy wykona)
 			resultHelp = exp(-(deltaEnergy - energy) / temperature);
 
 
-		if (resultHelp > (double)rand() / RAND_MAX)
+		if (resultHelp > (double)rand() / RAND_MAX) {
 			pathHelp = neighbour;
-
-		if (pathLenght(weightMatrix, pathHelp) < pathLenght(weightMatrix, bestPath)) // sprawdzenie czy dlugosc sciezki jest lepsza
+			energy = deltaEnergy;
+		}
+		
+			
+		if (deltaEnergy < bestPathLenght) { // sprawdzenie czy dlugosc sciezki jest lepsza
 			bestPath = pathHelp;
+			bestPathLenght = pathLenght(weightMatrix, bestPath);
+		}
 
 		temperature *= 0.999999;
 
