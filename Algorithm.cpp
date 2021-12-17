@@ -1,6 +1,6 @@
 #include "Algorithm.h"
 
-long long int read_QPC() {
+long long int read_QPCForAlgorithm() {
 	LARGE_INTEGER count;
 	QueryPerformanceCounter(&count);
 	return((long long int)count.QuadPart);
@@ -73,7 +73,7 @@ int pathLenght(vector<vector<int>> weightMatrix, vector<int> path) { // funkcja 
 void Algorithm::simulatedAnnealing(vector<vector<int>> weightMatrix, int& result, vector<int>& path, float timeAlg){ // funkcja odpowiedzialna za wykonanie algorytmu symulowanego wyzarzania
 	long long int frequency, start, elapsed = 0;
 	QueryPerformanceFrequency((LARGE_INTEGER*)&frequency);
-	start = read_QPC();
+	start = read_QPCForAlgorithm();
 	srand(unsigned(time(NULL)));
 	
 	vector<int> pathHelp, bestPath;
@@ -126,7 +126,7 @@ void Algorithm::simulatedAnnealing(vector<vector<int>> weightMatrix, int& result
 
 		temperature *= 0.999999;
 
-		elapsed = read_QPC() - start;
+		elapsed = read_QPCForAlgorithm() - start;
 	}
 
 	path = bestPath;
