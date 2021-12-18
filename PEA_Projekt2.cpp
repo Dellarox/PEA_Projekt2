@@ -1,11 +1,14 @@
 ﻿#include <iostream>
 #include "Algorithm.h"
+#include "TimeTests.h"
 #include <vector>
 
 using namespace std;
 
 vector<vector<int>> weightMatrixGlobal;
 int numberOfCitiesGlobal;
+TimeTests tt;
+Algorithm att;
 
 void showRow(vector<int> weightMatrix) { // funkcja pomocnicza w wyświetlaniu macierzy
     for (int i = 0; i < (int)weightMatrix.size(); i++) {
@@ -55,8 +58,11 @@ void doSA(float time) {
 }
 
 void tests() { // funkcja, w ktorej odpalane sa wszystkie testy
-    
-    cout << "KONIEC TESToW" << endl;
+    tt.timeTestsForSA(att, "43.txt", 43, weightMatrixGlobal);
+    tt.timeTestsForSA(att, "171.txt", 171, weightMatrixGlobal);
+    tt.timeTestsForSA(att, "358.txt", 358, weightMatrixGlobal);
+
+    cout << "KONIEC TESTOW" << endl;
 }
 
 int main()
@@ -82,7 +88,7 @@ int main()
         cout << "2. Pokaz wczytana strukture." << endl;
         cout << "3. Ustaw parametry." << endl;
         cout << "4. Rozwiaz problem komiwojazera na wczytanej strukturze  - symulowane wyzarzanie. (max czas trwania algorytmu: " << time << " sekund)" << endl;
-        //cout << "5. Testy. " << endl;
+        cout << "5. Testy. " << endl;
         cout << "6. Opuśc program. " << endl;
         cin >> menuOperation;
 

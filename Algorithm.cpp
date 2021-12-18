@@ -103,7 +103,7 @@ void Algorithm::simulatedAnnealing(vector<vector<int>> weightMatrix, int& result
 	bestPathLenght = pathLenght(weightMatrix, bestPath);
 	double energy = pathLenght(weightMatrix, pathHelp);
 
-	while (temperature > 0.00000001 && ((float)elapsed / frequency) < timeAlg) { // petla dziala dopoki nie osiagniemy za niskiej temperatury lub nie minie wyznaczony przez nas czas (kryterium stopu)
+	while (temperature > 0.001 && ((float)elapsed / frequency) < timeAlg) { // petla dziala dopoki nie osiagniemy za niskiej temperatury lub nie minie wyznaczony przez nas czas (kryterium stopu)
 		vector<int> neighbour = pathHelp;
 
 		vertex1 = rand() % pathHelp.size(); // losujemy pierwszy wierzcholek
@@ -131,13 +131,13 @@ void Algorithm::simulatedAnnealing(vector<vector<int>> weightMatrix, int& result
 			bestPathLenght = pathLenght(weightMatrix, bestPath);
 		}
 
-		temperature *= 0.999999;
+		temperature *= 0.99999;
 
 		elapsed = read_QPCForAlgorithm() - start;
 	}
 
 	path = bestPath;
-	result = pathLenght(weightMatrix, bestPath);
+	result = bestPathLenght;
 
-	cout << "Czas: " << ((float)elapsed / frequency) << endl;
+	//cout << "Czas: " << ((float)elapsed / frequency) << endl;
 }
